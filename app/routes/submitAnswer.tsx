@@ -37,6 +37,13 @@ const submitAnswer = () => {
       setPollData(null);
     });
 
+    socket.emit("joinRoom");
+
+    socket.on("currentPoll", (poll) => {
+      setPollData(poll);
+      setTimeLeft(poll.timeLeft ?? poll.timer);
+    });
+
     socket.on("pollResults", (data: any) => {
       console.log(data);
       setVotes(data);
@@ -46,6 +53,7 @@ const submitAnswer = () => {
       socket.off("pollCreated");
       socket.off("pollClosed");
       socket.off("pollResults");
+      socket.off("currentPoll");
 
       if (timerRef.current) {
         clearInterval(timerRef.current);

@@ -30,10 +30,18 @@ const teacherPoll = () => {
       setVotes(data);
     });
 
+    socket.emit("requestCurrentPoll");
+
+    socket.on("refetchCurrentPoll", ({ poll, votes }) => {
+      setPollData(poll);
+      setVotes(votes);
+    });
+
     return () => {
       socket.off("pollCreated");
       socket.off("pollClosed");
       socket.off("pollResults");
+      socket.off("refetchCurrentPoll");
     };
   }, []);
 
@@ -71,9 +79,20 @@ const teacherPoll = () => {
   }
 
   return (
-    <div className="mx-auto py-8 px-4 flex min-h-screen items-center justify-center">
-      <div className="w-3xl">
-        <h3 className="font-semibold text-2xl space-y-3">Question</h3>
+    <div className="mx-auto py-8 px-4 w-full flex min-h-screen items-center justify-center relative">
+      <div>
+        <div className="absolute top-4 right-4">
+          <Link
+            to={"/pastPollData"}
+            className="bg-[#8F64E1] flex w-fit items-center gap-2 px-16 py-4 cursor-pointer rounded-4xl text-white text-lg font-semibold"
+          >
+            <img src="/eye.svg" alt="eye" />
+            <p>View Poll History</p>
+          </Link>
+        </div>
+      </div>
+      <div className="w-3xl space-y-2">
+        <h3 className="font-semibold text-2xl ">Question</h3>
 
         <div className="border border-[#AF8FF1] rounded-lg">
           <div className="h-fit font-semibold text-lg p-4 mb-2 bg-gradient-to-r rounded-t-lg from-[#343434] to-[#6E6E6E] text-white">

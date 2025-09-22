@@ -6,7 +6,6 @@ import { useNavigate } from "react-router";
 import { loadUserFromSession } from "~/lib/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "~/lib/store";
-import { setCurrentPoll } from "~/lib/pollSlice";
 
 interface OptionProp {
   option: string;
@@ -117,95 +116,109 @@ const createPoll = () => {
   }, [navigate]);
 
   return (
-    <div className="w-4xl p-8 mt-4 mx-4 flex flex-col gap-8 items-left">
-      <Intervue />
+    <div className="w-full pb-6">
+      <div className="w-full lg:w-4xl p-4 md:p-8 mt-4 mx-2 md:mx-4 flex flex-col gap-8 items-left">
+        <Intervue />
 
-      <div className="space-y-2">
-        <h1 className="text-4xl">
-          Let's <span className="font-semibold">Get Started</span>
-        </h1>
-        <p className="text-[#00000080]">
-          you’ll have the ability to create and manage polls, ask questions, and
-          monitor your students' responses in real-time.
-        </p>
-      </div>
-
-      <div className=" space-y-2">
-        <div className=" flex items-center justify-between gap-4">
-          <h3 className="font-semibold">Enter your question</h3>
-          <TimerDropDown time={timer} onChange={handleTimerChange} />
-        </div>
-        <textarea
-          name="question"
-          id="question"
-          placeholder="Enter your question?"
-          value={question}
-          required
-          onChange={(e) => setQuestion(e.target.value)}
-          className="w-full bg-[#F1F1F1] rounded p-4 resize-none outline-none text-sm"
-          rows={5}
-        ></textarea>
-      </div>
-
-      <div className="space-y-4">
-        <div className="font-semibold flex items-center">
-          <h3 className="flex-2/3">Edit Options</h3>
-          <h3 className="flex-1/3">Is it correct?</h3>
+        <div className="space-y-2">
+          <h1 className="text-4xl">
+            Let's <span className="font-semibold">Get Started</span>
+          </h1>
+          <p className="text-[#00000080]">
+            you’ll have the ability to create and manage polls, ask questions,
+            and monitor your students' responses in real-time.
+          </p>
         </div>
 
-        {options.map((option, index) => (
-          <div key={index} className="flex items-center gap-4">
-            <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-r from-[#8F64E1] to-[#4E377B] text-white text-sm font-bold">
-              {index + 1}
-            </div>
-
-            <input
-              type="text"
-              value={option.option}
-              required
-              onChange={(e) =>
-                handleOptionChange(index, "option", e.target.value)
-              }
-              placeholder={`Option ${index + 1}`}
-              className=" min-w-[500px] bg-[#F1F1F1] border-none outline-none text-sm border rounded px-3 py-3"
-            />
-
-            <div className="flex items-center gap-4">
-              <label className="flex items-center gap-1">
-                <input
-                  type="radio"
-                  name={`correct-${index}`}
-                  checked={option.isCorrect}
-                  onChange={() => handleOptionChange(index, "isCorrect", true)}
-                  className="accent-purple-600"
-                />
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input
-                  type="radio"
-                  name={`correct-${index}`}
-                  checked={!option.isCorrect}
-                  onChange={() => handleOptionChange(index, "isCorrect", false)}
-                  className="accent-purple-600"
-                />
-                No
-              </label>
-            </div>
+        <div className=" space-y-2">
+          <div className=" flex items-center justify-between gap-4">
+            <h3 className="font-semibold">Enter your question</h3>
+            <TimerDropDown time={timer} onChange={handleTimerChange} />
           </div>
-        ))}
+          <div className="relative">
+            <textarea
+              name="question"
+              id="question"
+              placeholder="Enter your question?"
+              value={question}
+              required
+              maxLength={100}
+              onChange={(e) => setQuestion(e.target.value)}
+              className="w-full bg-[#F1F1F1] rounded p-4 resize-none outline-none text-sm"
+              rows={5}
+            ></textarea>
+            <p className="absolute bottom-4 right-4 z-10 text-xs">
+              {question.length}/100
+            </p>
+          </div>
+        </div>
 
-        <button onClick={addOption} className="text-purple-600 font-semibold">
-          + Add More option
+        <div className="space-y-4">
+          <div className="font-semibold flex items-center">
+            <h3 className="flex-1 lg:flex-2/3">Edit Options</h3>
+            <h3 className="lg:flex-1/3">Is it correct?</h3>
+          </div>
+
+          {options.map((option, index) => (
+            <div key={index} className="flex items-center gap-2 sm:gap-4">
+              <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-r from-[#8F64E1] to-[#4E377B] text-white text-sm font-bold">
+                {index + 1}
+              </div>
+
+              <input
+                type="text"
+                value={option.option}
+                required
+                onChange={(e) =>
+                  handleOptionChange(index, "option", e.target.value)
+                }
+                placeholder={`Option ${index + 1}`}
+                className="flex-1 lg:flex-0 lg:min-w-[500px] bg-[#F1F1F1] border-none outline-none text-sm border rounded px-3 py-3"
+              />
+
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-1">
+                  <input
+                    type="radio"
+                    name={`correct-${index}`}
+                    checked={option.isCorrect}
+                    onChange={() =>
+                      handleOptionChange(index, "isCorrect", true)
+                    }
+                    className="accent-purple-600"
+                  />
+                  Yes
+                </label>
+                <label className="flex items-center gap-1">
+                  <input
+                    type="radio"
+                    name={`correct-${index}`}
+                    checked={!option.isCorrect}
+                    onChange={() =>
+                      handleOptionChange(index, "isCorrect", false)
+                    }
+                    className="accent-purple-600"
+                  />
+                  No
+                </label>
+              </div>
+            </div>
+          ))}
+
+          <button onClick={addOption} className="text-purple-600 font-semibold">
+            + Add More option
+          </button>
+        </div>
+      </div>
+
+      <div className="border-t border-[#B6B6B6] flex justify-center md:justify-end pt-6 md:pr-4">
+        <button
+          onClick={handleSubmit}
+          className="bg-gradient-to-r w-fit from-[#8F64E1] to-[#1D68BD] px-16 py-4 cursor-pointer rounded-[34px] text-white font-semibold"
+        >
+          Ask Question
         </button>
       </div>
-
-      <button
-        onClick={handleSubmit}
-        className="bg-gradient-to-r w-fit from-[#8F64E1] to-[#1D68BD] px-8 py-2 cursor-pointer rounded text-white font-semibold"
-      >
-        Submit
-      </button>
     </div>
   );
 };

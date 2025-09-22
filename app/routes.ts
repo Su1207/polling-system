@@ -6,4 +6,5 @@ export default [
   route("/student", "routes/studentRegister.tsx"),
   route("/submitAnswer", "routes/submitAnswer.tsx"),
   route("/teacherPoll", "routes/teacherPoll.tsx"),
+  route("/pastPollData", "routes/pastPollData.tsx"),
 ] satisfies RouteConfig;

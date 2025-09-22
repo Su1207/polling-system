@@ -20,7 +20,7 @@ const studentRegister = () => {
   };
 
   return (
-    <div className="mx-auto py-8 px-4 flex min-h-screen items-center justify-center">
+    <div className="mx-auto w-full py-8 px-4 flex min-h-screen items-center justify-center">
       <section className="flex flex-col items-center gap-8">
         <Intervue />
 
@@ -42,7 +42,7 @@ const studentRegister = () => {
             placeholder="Your Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-lg bg-[#F1F1F1] rounded p-3 mt-2 outline-none text-sm text-[#000000]"
+            className="w-[90vw] md:w-lg bg-[#F1F1F1] rounded p-3 mt-2 outline-none text-sm text-[#000000]"
           />
         </div>
 
