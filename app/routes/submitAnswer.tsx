@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import ChatPopover from "~/components/ChatPopOver";
 import Intervue from "~/components/Intervue";
 import { type Option } from "~/lib/pollSlice";
 import { connectSocket } from "~/utils/socket";
@@ -17,7 +18,7 @@ const submitAnswer = () => {
   const [pollData, setPollData] = useState<PollDataProp | null>(null);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [votes, setVotes] = useState<{ [key: number]: number }>({});
 
@@ -28,20 +29,24 @@ const submitAnswer = () => {
 
   useEffect(() => {
     socket.on("pollCreated", (poll) => {
+      setSubmitted(false);
+      setSelectedOption(null);
       setPollData(poll);
       setTimeLeft(poll.timer);
     });
 
     socket.on("pollClosed", (data: any) => {
       console.log("Poll closed:", data);
-      setPollData(null);
+      //   setPollData(null);
     });
 
     socket.emit("joinRoom");
 
-    socket.on("currentPoll", (poll) => {
-      setPollData(poll);
-      setTimeLeft(poll.timeLeft ?? poll.timer);
+    socket.on("currentPoll", ({ poll, timeLeft }) => {
+      if (poll) {
+        setPollData(poll);
+        setTimeLeft(timeLeft);
+      }
     });
 
     socket.on("pollResults", (data: any) => {
@@ -69,23 +74,22 @@ const submitAnswer = () => {
   };
 
   useEffect(() => {
-    if (timeLeft > 0) {
+    if (timeLeft && timeLeft > 0) {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
       timerRef.current = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
+        setTimeLeft((prev) => (prev ?? 1) - 1);
       }, 1000);
-    } else if (timeLeft === 0) {
+    } else if (timeLeft && timeLeft === 0) {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
       if (!submitted && selectedOption !== null) {
         handleSubmit();
-        setSubmitted(true);
       }
-      setPollData(null);
-      setSelectedOption(null);
+      setSubmitted(true);
+      setTimeLeft(null);
     }
 
     return () => {
@@ -94,6 +98,8 @@ const submitAnswer = () => {
       }
     };
   }, [timeLeft, submitted]);
+
+  console.log(pollData);
 
   const calculatePercentage = (count: number) => {
     if (totalVotes === 0) return 0;
@@ -128,6 +134,8 @@ const submitAnswer = () => {
         <p className="text-2xl font-semibold text-center">
           Wait for the teacher to ask a new question..
         </p>
+
+        <ChatPopover />
       </div>
     );
   }
@@ -140,7 +148,7 @@ const submitAnswer = () => {
           <div className="flex items-center gap-2">
             <img src="/timer.svg" alt="time" />
             <p className="text-[#CB1206] text-lg font-semibold ">
-              00:{timeLeft.toString().padStart(2, "0")}
+              00:{timeLeft?.toString().padStart(2, "0")}
             </p>
           </div>
         </div>
@@ -151,7 +159,7 @@ const submitAnswer = () => {
           </div>
 
           <div className="py-6 px-6 space-y-4">
-            {pollData?.options.length > 0 &&
+            {pollData?.options?.length > 0 &&
               pollData.options.map((option, index) => (
                 <div key={index} className="space-y-1">
                   <div
@@ -161,7 +169,8 @@ const submitAnswer = () => {
                         : "border-[#8D8D8D30] bg-[#F1F1F1]"
                     } ${submitted ? "cursor-not-allowed" : "cursor-pointer"}`}
                     onClick={() => {
-                      if (!submitted && timeLeft > 0) setSelectedOption(index);
+                      if (!submitted && timeLeft && timeLeft > 0)
+                        setSelectedOption(index);
                     }}
                   >
                     <div className="relative flex items-center gap-3 px-4 py-3 transition-all duration-300 ease-in-out rounded overflow-hidden">
