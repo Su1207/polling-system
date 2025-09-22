@@ -6,7 +6,9 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 export const connectSocket = () => {
   if (!socket) {
-    socket = io(BACKEND_URL);
+    socket = io(BACKEND_URL, {
+      transports: ["websocket", "polling"],
+    });
   }
   return socket;
 };
