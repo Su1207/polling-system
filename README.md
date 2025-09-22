@@ -1,87 +1,61 @@
-# Welcome to React Router!
+# 🎨 Polling App Frontend
 
-A modern, production-ready template for building full-stack React applications using React Router.
+This is the frontend of the **Realtime Polling Application**, built with **React, TypeScript, and TailwindCSS**.  
+It provides an interactive UI for students to participate in polls and for teachers to view realtime results.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+---
 
-## Features
+<img width="1915" height="869" alt="image" src="https://github.com/user-attachments/assets/8fb21970-f1eb-41fb-af12-fbe534bdbf5e" />
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+<img width="1896" height="871" alt="image" src="https://github.com/user-attachments/assets/17754678-8d4a-4352-a27e-7b57a1eb04f4" />
 
-## Getting Started
+<img width="1904" height="872" alt="image" src="https://github.com/user-attachments/assets/e29122f2-56ef-426e-8f53-29a56d4f190a" />
 
-### Installation
+<img width="1912" height="872" alt="image" src="https://github.com/user-attachments/assets/36edc539-3e7d-445f-b85c-188e8cb1fa84" />
 
-Install the dependencies:
+<img width="1910" height="867" alt="image" src="https://github.com/user-attachments/assets/55ee79c9-3ab3-4585-a7f7-d1424ae118dd" />
 
+<img width="1915" height="866" alt="image" src="https://github.com/user-attachments/assets/d3fdc278-5ec0-4e18-8a18-578e248824ab" />
+
+
+## 🚀 Features
+- User-friendly interface for voting
+- Realtime progress bar updates for each option
+- Timer countdown for active polls
+- Prevent multiple submissions per poll
+- Gradient-styled buttons & smooth animations
+- Works seamlessly with the backend (Express + Socket.IO)
+
+---
+
+## 🛠️ Tech Stack
+- **React.js (with Vite)** – Frontend framework
+- **TypeScript** – Type safety
+- **TailwindCSS** – Styling
+- **Socket.IO Client** – Realtime updates
+- **Axios/Fetch** – API calls
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/your-username/polling-app-frontend.git
+cd polling-app-frontend
+```
+
+### 2️⃣ Install dependencies
 ```bash
 npm install
 ```
 
-### Development
+### 3️⃣ Setup environment variables
+```bash
+VITE_BACKEND_URL=http://localhost:3000
+```
 
-Start the development server with HMR:
-
+### 4️⃣ Run the development server
 ```bash
 npm run dev
 ```
-
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
