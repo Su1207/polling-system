@@ -11,7 +11,7 @@ interface Message {
 
 const socket = connectSocket();
 
-const ChatPopover: React.FC = () => {
+const ChatPopOver: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [participants, setParticipants] = useState<string[]>([]);
@@ -134,4 +134,4 @@ const ChatPopover: React.FC = () => {
   );
 };
 
-export default ChatPopover;
+export default ChatPopOver;
