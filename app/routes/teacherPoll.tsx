@@ -75,7 +75,6 @@ const teacherPoll = () => {
           </svg>
           <span className="sr-only">Loading...</span>
         </div>
-        <ChatPopOver />
       </div>
     );
   }
