@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "~/lib/store";
 
 interface Message {
   user: string;
@@ -18,7 +20,7 @@ const Chat: React.FC<ChatProps> = ({
   onMessageChange,
   onSendMessage,
 }) => {
-  const username = sessionStorage.getItem("username") || "";
+  const username = useSelector((state: RootState) => state.user.username);
 
   useEffect(() => {
     const chatWindow = document.getElementById("chat-window");
@@ -37,18 +39,23 @@ const Chat: React.FC<ChatProps> = ({
           <div className="text-gray-500 text-sm">No messages yet</div>
         ) : (
           messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`mb-2 p-2 max-w-[80%] text-sm break-words rounded ${
-                msg.user === username
-                  ? "bg-purple-500 text-white ml-auto"
-                  : "bg-gray-700 text-white mr-auto"
-              }`}
-            >
-              <span className="font-semibold mr-1">
-                {msg.user === username ? "You" : msg.user}:
-              </span>
-              <span>{msg.text}</span>
+            <div key={index} className={`mb-2 w-full font-normal`}>
+              <div
+                className={`font-semibold mb-1 text-xs text-[#4F0BD3] ${
+                  msg.user === username ? "text-right" : "text-left"
+                }`}
+              >
+                {msg.user === username ? "You" : msg.user}
+              </div>
+              <p
+                className={`text-sm max-w-[80%] font-normal w-fit break-words rounded-b-lg text-white p-2 pr-4 ${
+                  msg.user === username
+                    ? "bg-[#8F64E1] ml-auto rounded-tl-lg"
+                    : "bg-[#3A3A3B] mr-auto rounded-tr-lg"
+                }`}
+              >
+                {msg.text}
+              </p>
             </div>
           ))
         )}
@@ -60,11 +67,11 @@ const Chat: React.FC<ChatProps> = ({
           value={newMessage}
           onChange={(e) => onMessageChange(e.target.value)}
           placeholder="Type a message"
-          className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm outline-none"
         />
         <button
           onClick={onSendMessage}
-          className="bg-purple-600 text-white px-4 py-1 rounded text-sm hover:bg-purple-700"
+          className="bg-black text-white px-4 py-1 rounded text-sm hover:bg-purple-700"
         >
           Send
         </button>

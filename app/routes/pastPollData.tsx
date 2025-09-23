@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import type { PollDataProp } from "./submitAnswer";
 import { connectSocket } from "~/utils/socket";
+import { useSelector } from "react-redux";
+import type { RootState } from "~/lib/store";
+import { useNavigate } from "react-router";
 
 const socket = connectSocket();
 
@@ -11,12 +14,22 @@ interface VoteProp {
 const pastPollData = () => {
   const [pollData, setPollData] = useState<PollDataProp[]>([]);
 
+  const role = useSelector((state: RootState) => state.user.role);
+
+  const navigate = useNavigate();
+
   const totalVotes = (votes: VoteProp) => {
     return Object.values(votes).reduce(
       (acc: number, curr: number) => acc + curr,
       0
     );
   };
+
+  useEffect(() => {
+    if (!role || role !== "teacher") {
+      navigate("/");
+    }
+  }, [role, navigate]);
 
   useEffect(() => {
     socket.emit("requestPastPollData");
@@ -61,8 +74,6 @@ const pastPollData = () => {
       </div>
     );
   }
-
-  console.log(pollData);
 
   return (
     <div className="mx-auto mt-4 py-8 px-4 flex flex-col gap-8 min-h-screen items-center justify-center">

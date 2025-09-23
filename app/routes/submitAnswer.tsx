@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import ChatPopup from "~/components/ChatPopup";
 import Intervue from "~/components/Intervue";
 import { type Option } from "~/lib/pollSlice";
+import type { AppDispatch, RootState } from "~/lib/store";
+import { clearUser } from "~/lib/userSlice";
 import { connectSocket } from "~/utils/socket";
 
 const socket = connectSocket();
@@ -22,6 +26,10 @@ const submitAnswer = () => {
   const [submitted, setSubmitted] = useState(false);
   const [votes, setVotes] = useState<{ [key: number]: number }>({});
 
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch<AppDispatch>();
+
   const totalVotes = Object.values(votes).reduce(
     (acc: number, curr: number) => acc + curr,
     0
@@ -38,6 +46,12 @@ const submitAnswer = () => {
     socket.on("pollClosed", (data: any) => {
       console.log("Poll closed:", data);
       //   setPollData(null);
+    });
+
+    socket.on("kickedOut", (msg) => {
+      console.log(msg);
+      dispatch(clearUser());
+      navigate("/kickout", { replace: true });
     });
 
     socket.emit("joinRoom");
@@ -59,6 +73,7 @@ const submitAnswer = () => {
       socket.off("pollClosed");
       socket.off("pollResults");
       socket.off("currentPoll");
+      socket.off("kickedOut");
 
       if (timerRef.current) {
         clearInterval(timerRef.current);
@@ -152,7 +167,6 @@ const submitAnswer = () => {
             </p>
           </div>
         </div>
-
         <div className="border border-[#AF8FF1] rounded-lg">
           <div className="h-fit font-semibold text-lg p-4 mb-2 bg-gradient-to-r rounded-t-lg from-[#343434] to-[#6E6E6E] text-white">
             {pollData.question}
@@ -208,7 +222,6 @@ const submitAnswer = () => {
               ))}
           </div>
         </div>
-
         {!submitted ? (
           <div className="flex justify-end mt-5">
             <button
@@ -223,7 +236,9 @@ const submitAnswer = () => {
             Wait for the teacher to ask a new question..
           </p>
         )}
-        <ChatPopup />
+        <div className="z-50">
+          <ChatPopup />
+        </div>{" "}
       </div>
     </div>
   );

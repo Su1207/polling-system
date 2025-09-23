@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { connectSocket } from "~/utils/socket";
 import type { PollDataProp } from "./submitAnswer";
 import Intervue from "~/components/Intervue";
 import ChatPopup from "~/components/ChatPopup";
+import { useSelector } from "react-redux";
+import type { RootState } from "~/lib/store";
 
 const socket = connectSocket();
 
@@ -15,6 +17,15 @@ const teacherPoll = () => {
     (acc: number, curr: number) => acc + curr,
     0
   );
+
+  const role = useSelector((state: RootState) => state.user.role);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!role && role !== "teacher") {
+      navigate("/");
+    }
+  }, [role, navigate]);
 
   useEffect(() => {
     socket.on("pollCreated", (poll) => {
@@ -74,6 +85,18 @@ const teacherPoll = () => {
             />
           </svg>
           <span className="sr-only">Loading...</span>
+        </div>
+
+        <div className="flex justify-end mt-5">
+          <Link
+            to={"/teacher"}
+            className="bg-gradient-to-r from-[#8F64E1] to-[#1D68BD] px-16 py-4 cursor-pointer rounded-4xl text-white text-lg font-semibold"
+          >
+            + Ask a new question
+          </Link>
+        </div>
+        <div className="z-50">
+          <ChatPopup />
         </div>
       </div>
     );
