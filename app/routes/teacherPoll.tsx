@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { connectSocket } from "~/utils/socket";
 import type { PollDataProp } from "./submitAnswer";
 import Intervue from "~/components/Intervue";
-import ChatPopOver from "~/components/ChatPopOver";
+import ChatPopup from "~/components/ChatPopup";
 
 const socket = connectSocket();
 
@@ -145,7 +145,7 @@ const teacherPoll = () => {
             + Ask a new question
           </Link>
         </div>
-        <ChatPopOver />
+        <ChatPopup />
       </div>
     </div>
   );

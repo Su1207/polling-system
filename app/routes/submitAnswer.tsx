@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import ChatPopOver from "~/components/ChatPopOver";
+import ChatPopup from "~/components/ChatPopup";
 import Intervue from "~/components/Intervue";
 import { type Option } from "~/lib/pollSlice";
 import { connectSocket } from "~/utils/socket";
@@ -135,7 +135,7 @@ const submitAnswer = () => {
           Wait for the teacher to ask a new question..
         </p>
 
-        <ChatPopOver />
+        <ChatPopup />
       </div>
     );
   }
@@ -223,7 +223,7 @@ const submitAnswer = () => {
             Wait for the teacher to ask a new question..
           </p>
         )}
-        <ChatPopOver />
+        <ChatPopup />
       </div>
     </div>
   );
