@@ -223,6 +223,7 @@ const submitAnswer = () => {
             Wait for the teacher to ask a new question..
           </p>
         )}
+        <ChatPopover />
       </div>
     </div>
   );

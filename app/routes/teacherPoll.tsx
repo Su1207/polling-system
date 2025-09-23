@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { connectSocket } from "~/utils/socket";
 import type { PollDataProp } from "./submitAnswer";
 import Intervue from "~/components/Intervue";
+import ChatPopover from "~/components/ChatPopOver";
 
 const socket = connectSocket();
 
@@ -74,6 +75,7 @@ const teacherPoll = () => {
           </svg>
           <span className="sr-only">Loading...</span>
         </div>
+        <ChatPopover />
       </div>
     );
   }
@@ -144,6 +146,7 @@ const teacherPoll = () => {
             + Ask a new question
           </Link>
         </div>
+        <ChatPopover />
       </div>
     </div>
   );
